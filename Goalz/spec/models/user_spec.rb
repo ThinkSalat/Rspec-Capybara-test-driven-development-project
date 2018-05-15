@@ -27,6 +27,18 @@ RSpec.describe User, type: :model do
     it {should validate_length_of(:password).is_at_least(6)}
   end
   
+  describe '#password=' do 
+    it 'uses BCrypt to create a password hash' do 
+      # oursuser = User.create(username:'usersdfdfhgfg', password:'passfghfsdfghfhword')
+      expect(BCrypt::Password).to receive(:create).with("passfghfsdfghfhword")
+      our_user = User.create(username:'userdfhgfg', password:'passfghfghfhword')
+      
+      puts oursuser.attributes
+      puts oursuser.errors.full_messages
+      puts our_user.attributes
+      # expect(our_user.password_digest).to_not be_nil
+    end 
+  end 
   
   describe 'session_token' do
     it 'assigns a session token' do 
@@ -50,16 +62,6 @@ RSpec.describe User, type: :model do
   end
   
   
-  describe '#password=' do 
-    it 'uses BCrypt to create a password hash' do 
-      
-      expect(BCrypt::Password).to receive(:create).with("password")
-      
-      our_user = User.new(username:'user', password:'password')
-      puts  our_user.attributes
-    
-    end 
-  end 
   
   
   describe '#is_password?' do 
